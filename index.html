@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Diario Ambiental - Ñuble, Biobío y Araucanía</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background: #1a1a1a;
+      font-family: 'Orbitron', sans-serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    header {
+      font-size: 2.2rem;
+      color: #00ffe0;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    section {
+      width: 100%;
+      max-width: 900px;
+    }
+    .article {
+      background-color: #2c2c2c;
+      border-left: 5px solid #00ffe0;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    }
+    .article h2 {
+      margin: 0 0 0.5rem;
+      color: #00ffe0;
+    }
+    .article p {
+      margin: 0.5rem 0;
+    }
+    .article a {
+      color: #00ffe0;
+      text-decoration: none;
+    }
+    .article a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Diario Ambiental Regional 🌿
+    <div style="font-size: 1rem; color: #ccc;">Ñuble, Biobío y La Araucanía</div>
+  </header>
+
+  <section id="news-section">
+    <!-- Noticias se cargarán dinámicamente aquí -->
+  </section>
+
+  <footer>
+    Diario Ambiental Regional © 2025 - Proyecto informativo sobre medioambiente y cultura en el sur de Chile.
+  </footer>
+
+  <script>
+    const SHEET_URL = "https://api.sheetbest.com/sheets/44a47387-4418-4382-a713-b2e42751b9c1"; // Cambia por tu URL real de Sheet.best
+
+    async function fetchNoticias() {
+      try {
+        const response = await fetch(SHEET_URL);
+        const data = await response.json();
+
+        const noticiasOrdenadas = data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        renderNoticias(noticiasOrdenadas);
+      } catch (error) {
+        console.error("Error al cargar noticias:", error);
+      }
+    }
+
+    function renderNoticias(noticias) {
+      const container = document.getElementById("news-section");
+      container.innerHTML = "";
+      noticias.forEach(noticia => {
+        const article = document.createElement("div");
+        article.className = "article";
+        article.innerHTML = `
+          <h2>${noticia.titulo}</h2>
+          <p>${noticia.descripcion}</p>
+          <a href="${noticia.link}" target="_blank">Leer más</a>
+        `;
+        container.appendChild(article);
+      });
+    }
+
+    fetchNoticias();
+    setInterval(fetchNoticias, 60000); // Actualiza cada minuto
+  </script>
+</body>
+</html>
