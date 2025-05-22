@@ -47,7 +47,7 @@
 <body>
   <header>
     <h1>Diario Ambiental</h1>
-    <p>Noticias sobre delitos medioambientales - Ñuble, Biobío y La Araucanía</p>
+    <p>Noticias sobre delitos medioambientales en Chile</p>
   </header>
 
   <section class="noticias" id="contenedorNoticias">
@@ -70,7 +70,9 @@
         const feeds = [
           "https://api.rss2json.com/v1/api.json?rss_url=https://www.cooperativa.cl/noticias/site/tax/port/all/rss_2___1.xml",
           "https://api.rss2json.com/v1/api.json?rss_url=https://www.ladiscusion.cl/feed/",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://araucaniasinfronteras.cl/feed/"
+          "https://api.rss2json.com/v1/api.json?rss_url=https://araucaniasinfronteras.cl/feed/",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.elmostrador.cl/feed/",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.biobiochile.cl/noticias/feed"
         ];
 
         const resultados = await Promise.all(feeds.map(url => fetch(url).then(r => r.json())));
@@ -84,12 +86,15 @@
                  titulo.includes("bidema") ||
                  titulo.includes("delito") ||
                  titulo.includes("fauna") ||
-                 titulo.includes("residuos");
+                 titulo.includes("residuos") ||
+                 titulo.includes("deforestación") ||
+                 titulo.includes("vertimiento") ||
+                 titulo.includes("daño ambiental");
         }));
 
         contenedor.innerHTML = noticiasFiltradas.length ? "" : "<p>No se encontraron noticias relevantes.</p>";
 
-        noticiasFiltradas.slice(0, 10).forEach(noticia => {
+        noticiasFiltradas.slice(0, 15).forEach(noticia => {
           const div = document.createElement("div");
           div.className = "noticia";
           div.innerHTML = `<strong>${noticia.title}</strong><br><a href="${noticia.link}" target="_blank">Leer más</a>`;
